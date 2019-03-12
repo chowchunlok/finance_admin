@@ -2,7 +2,7 @@
 
 > A admin built by Element UI & axios & iconfont & permission control & lint
 
-**Live demo:** https://github.com/chowchunlok/finance_admin
+**Live demo:**
 
 ## Build Setup
 

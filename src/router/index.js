@@ -9,19 +9,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '../views/layout/Layout'
 
-/**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
-    title: 'title'               the name show in subMenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
-  }
-**/
 export const constantRouterMap = [
 	{
 		path: '/login',
@@ -47,97 +34,106 @@ export const constantRouterMap = [
 	{
 		path: '/users',
 		component: Layout,
-		redirect: '/users/table',
+		redirect: '/users/member',
 		name: 'Users',
-		meta: { title: '用户', icon: 'example' },
+		meta: { title: 'users', icon: 'user' },
 		children: [
 			{
-				path: 'table',
+				path: 'member',
 				name: 'Table',
-				component: () => import('@/views/table/index'),
-				meta: { title: '会员', icon: 'table' }
+				component: () => import('@/views/edit/index'),
+				meta: { title: 'member', icon: 'member' }
+			},
+			{
+				path: 'feedback',
+				name: 'Feedback',
+				component: () => import('@/views/feedback/index'),
+				meta: { title: 'feedback', icon: 'feedback' }
 			}
-			// {
-			// 	path: 'tree',
-			// 	name: 'Tree',
-			// 	component: () => import('@/views/tree/index'),
-			// 	meta: { title: 'Tree', icon: 'tree' }
-			// }
 		]
 	},
 
 	{
 		path: '/news',
 		component: Layout,
+		redirect: '/news/edit',
+		name: 'News',
+		meta: { title: 'news', icon: 'news' },
 		children: [
 			{
-				path: 'index',
-				name: 'News',
+				path: 'edit',
+				name: 'Edit',
 				component: () => import('@/views/form/index'),
-				meta: { title: '新闻', icon: 'form' }
+				meta: { title: 'edit', icon: 'form' }
+			},
+			{
+				path: 'newsItem',
+				name: 'News',
+				component: () => import('@/views/news/index'),
+				meta: { title: 'newsItem', icon: 'item' }
 			}
 		]
 	},
 
-	// {
-	// 	path: '/nested',
-	// 	component: Layout,
-	// 	redirect: '/nested/menu1',
-	// 	name: 'Nested',
-	// 	meta: {
-	// 		title: 'Nested',
-	// 		icon: 'nested'
-	// 	},
-	// 	children: [
-	// 		{
-	// 			path: 'menu1',
-	// 			component: () => import('@/views/nested/menu1/index'), // Parent router-view
-	// 			name: 'Menu1',
-	// 			meta: { title: 'Menu1' },
-	// 			children: [
-	// 				{
-	// 					path: 'menu1-1',
-	// 					component: () => import('@/views/nested/menu1/menu1-1'),
-	// 					name: 'Menu1-1',
-	// 					meta: { title: 'Menu1-1' }
-	// 				},
-	// 				{
-	// 					path: 'menu1-2',
-	// 					component: () => import('@/views/nested/menu1/menu1-2'),
-	// 					name: 'Menu1-2',
-	// 					meta: { title: 'Menu1-2' },
-	// 					children: [
-	// 						{
-	// 							path: 'menu1-2-1',
-	// 							component: () =>
-	// 								import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-	// 							name: 'Menu1-2-1',
-	// 							meta: { title: 'Menu1-2-1' }
-	// 						},
-	// 						{
-	// 							path: 'menu1-2-2',
-	// 							component: () =>
-	// 								import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-	// 							name: 'Menu1-2-2',
-	// 							meta: { title: 'Menu1-2-2' }
-	// 						}
-	// 					]
-	// 				},
-	// 				{
-	// 					path: 'menu1-3',
-	// 					component: () => import('@/views/nested/menu1/menu1-3'),
-	// 					name: 'Menu1-3',
-	// 					meta: { title: 'Menu1-3' }
-	// 				}
-	// 			]
-	// 		},
-	// 		{
-	// 			path: 'menu2',
-	// 			component: () => import('@/views/nested/menu2/index'),
-	// 			meta: { title: 'menu2' }
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/nested',
+		component: Layout,
+		redirect: '/nested/menu1',
+		name: 'Nested',
+		meta: {
+			title: 'Nested',
+			icon: 'nested'
+		},
+		children: [
+			{
+				path: 'menu1',
+				component: () => import('@/views/nested/menu1/index'), // Parent router-view
+				name: 'Menu1',
+				meta: { title: 'Menu1' },
+				children: [
+					{
+						path: 'menu1-1',
+						component: () => import('@/views/nested/menu1/menu1-1'),
+						name: 'Menu1-1',
+						meta: { title: 'Menu1-1' }
+					},
+					{
+						path: 'menu1-2',
+						component: () => import('@/views/nested/menu1/menu1-2'),
+						name: 'Menu1-2',
+						meta: { title: 'Menu1-2' },
+						children: [
+							{
+								path: 'menu1-2-1',
+								component: () =>
+									import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+								name: 'Menu1-2-1',
+								meta: { title: 'Menu1-2-1' }
+							},
+							{
+								path: 'menu1-2-2',
+								component: () =>
+									import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+								name: 'Menu1-2-2',
+								meta: { title: 'Menu1-2-2' }
+							}
+						]
+					},
+					{
+						path: 'menu1-3',
+						component: () => import('@/views/nested/menu1/menu1-3'),
+						name: 'Menu1-3',
+						meta: { title: 'Menu1-3' }
+					}
+				]
+			},
+			{
+				path: 'menu2',
+				component: () => import('@/views/nested/menu2/index'),
+				meta: { title: 'menu2' }
+			}
+		]
+	},
 
 	// {
 	// 	path: 'external-link',
@@ -154,7 +150,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-	// mode: 'history', //后端支持可开
+	mode: 'history', //后端支持可开
 	scrollBehavior: () => ({ y: 0 }),
 	routes: constantRouterMap
 })

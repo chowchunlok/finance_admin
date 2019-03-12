@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">管理员名字:{{ name }}</div>
-    <div class="dashboard-text">级别:
+    <div class="dashboard-text">Title:{{ name }}</div>
+    <div class="dashboard-text">
+      Authority:
       <span v-for="role in roles" :key="role">{{ role }}</span>
     </div>
   </div>
