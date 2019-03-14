@@ -1,0 +1,8 @@
+//register:
+4008:User already exists! Cannot register repeatedly
+4010:register failed
+2000:success
+
+//login:
+4010:secret wrong
+4004:user dont exit

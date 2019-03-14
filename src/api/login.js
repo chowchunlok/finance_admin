@@ -1,8 +1,16 @@
 import request from '@/utils/request'
 
+export function register(data) {
+	return request({
+		url: '/api/admin/register',
+		method: 'post',
+		data: data
+	})
+}
+
 export function login(username, password) {
 	return request({
-		url: '/user/login',
+		url: '/api/admin/login',
 		method: 'post',
 		data: {
 			username,
@@ -11,17 +19,16 @@ export function login(username, password) {
 	})
 }
 
-export function getInfo(token) {
+export function getInfo() {
 	return request({
-		url: '/user/info',
-		method: 'get',
-		params: { token }
+		url: '/api/admin/info',
+		method: 'get'
 	})
 }
 
 export function logout() {
 	return request({
-		url: '/user/logout',
+		url: '/api/admin/logout',
 		method: 'post'
 	})
 }

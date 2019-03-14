@@ -6,9 +6,6 @@ const tokens = {
 	},
 	editor: {
 		token: 'editor-token'
-	},
-	marco: {
-		token: 'marco-token'
 	}
 }
 
@@ -16,22 +13,14 @@ const users = {
 	'admin-token': {
 		roles: ['admin'],
 		introduction: 'I am a super administrator',
-		avatar: '../src/assets/avatar.JPG',
+		avatar: '../src/assets/admin.png',
 		name: 'Super Admin'
 	},
 	'editor-token': {
 		roles: ['editor'],
 		introduction: 'I am an editor',
-		avatar:
-			'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+		avatar: '../src/assets/editor.jpg',
 		name: 'Normal Editor'
-	},
-	'marco-token': {
-		roles: ['marco'],
-		introduction: 'I am an marco',
-		avatar:
-			'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-		name: 'Normal marco'
 	}
 }
 
