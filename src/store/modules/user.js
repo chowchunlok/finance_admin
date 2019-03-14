@@ -1,4 +1,5 @@
-import { register, login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo } from '@/api/login'
+import { register } from '@/api/register'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 

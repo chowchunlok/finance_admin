@@ -39,7 +39,9 @@ service.interceptors.response.use(
 		 * code为非2000是抛错
 		 */
 		const res = response.data
+
 		if (res.code !== 2000) {
+			// Token认证管理
 			// 5003:illegal token; 5002:Other Client are log in; 5001:Token expired; 5000:invalid Token (Match All Situation);
 			if (
 				res.code === 5000 ||
@@ -90,11 +92,36 @@ service.interceptors.response.use(
 				})
 			}
 
+			// 用户
+			// 获取用户资料错误
+			if (res.code === 7041 || res.code === 7002) {
+				MessageBox.confirm(`${res.message}`, 'Delete Failed', {
+					confirmButtonText: 'Confirm',
+					cancelButtonText: 'Cancel',
+					type: 'error'
+				})
+			}
+			// 用户反馈
+			//TODO:
+
+			// 新闻
+			// 新闻发布
+			if (res.code === 8001 || res.code === 8040) {
+				MessageBox.confirm(`${res.message}`, 'Delete Failed', {
+					confirmButtonText: 'Confirm',
+					cancelButtonText: 'Cancel',
+					type: 'error'
+				})
+			}
+			// 新闻删除
+			//TODO:
+
 			// Unified processing error
 			return Promise.reject('error')
 		} else {
 			// Register Success
-			return response.data
+			// console.log(response.data) //TODO:
+			return res
 		}
 	},
 	error => {

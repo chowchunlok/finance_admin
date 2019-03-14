@@ -45,7 +45,7 @@ export const constantRouterMap = [
 			{
 				path: 'member',
 				name: 'Table',
-				component: () => import('@/views/edit/index'),
+				component: () => import('@/views/user/index'),
 				meta: { title: 'member', icon: 'member' }
 			},
 			{

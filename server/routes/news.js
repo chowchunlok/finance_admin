@@ -2,32 +2,36 @@ var express = require('express')
 var router = express.Router()
 var model = require('../db/db')
 
-// 增加新闻
-router.post('/add', function(req, res) {
+// 发布新闻
+router.post('/release', function(req, res) {
 	model.News.find({}, (err, doc) => {
 		if (err) {
+			console.log('release_err:', err) //TODO:debug
 			res.json({
-				code: 4000,
-				message: '查询数据库失败'
+				code: 8040,
+				message: 'Database Error'
 			})
 		} else {
-			// editor url
-			var len = doc[0].newsList.length + 1
-			req.body.data.url += len
-			req.body.data.date = req.body.data.date.slice(0, 10)
+			let target = req.body.data
+			let newsList = doc[0].newsList
 
-			doc[0].newsList.push(req.body.data)
+			var len = newsList.length + 1
+			target.url += len
+			target.date = target.date.slice(0, 10)
+
+			newsList.push(target)
 			doc[0].save((err, pro) => {
+				console.log(err, pro) //TODO:
 				if (err) {
-					console.log(err) //TODO: for debug
+					console.log('release_save:', err) //TODO: for debug
 					res.json({
-						code: 4004,
-						message: '数据库保存失败'
+						code: 8001,
+						message: 'Data Save Failed'
 					})
 				} else {
 					res.json({
 						code: 2000,
-						message: '新闻数据更新成功'
+						message: 'Release Success'
 					})
 				}
 			})

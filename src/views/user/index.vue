@@ -44,8 +44,9 @@
 
 <script>
 import { getList } from '@/api/table'
-// import { getUserList } from '@/api/user'
+import { getUserData, deleteUser } from '@/api/user'
 import $api from 'axios'
+import { resolve, reject } from 'q'
 
 export default {
 	filters: {
@@ -77,15 +78,19 @@ export default {
 			})
 		},
 		fetchUserData() {
-			$api.get('/api/user').then(res => {
-				this.list = res.data.data
-				this.list.forEach(item => {
-					item.create_time = item.create_time.slice(0, 10)
-					item.birth = item.birth.slice(0, 10)
+			console.log(getUserData())
+			getUserData()
+				.then(res => {
+					this.list = res.data
+					this.list.forEach(item => {
+						item.create_time = item.create_time.slice(0, 10)
+						item.birth = item.birth.slice(0, 10)
+					})
+					this.listLoading = false
 				})
-
-				this.listLoading = false
-			})
+				.catch(err => {
+					console.log(err) // TODO:
+				})
 		},
 		handleDelete(index, row) {
 			this.$confirm(`此操作将永久删除 ${row.name} 用户, 是否继续?`, '提示', {
@@ -93,24 +98,17 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				$api
-					.post('/api/user/delete', { email: row.email })
+				deleteUser({ email: row.email })
 					.then(res => {
 						this.$message({
-							message: `删除用户 ${row.name} 成功`,
 							type: 'success',
-							duration: 2 * 1000
+							message: res.message
 						})
 						setTimeout(() => {
 							this.$router.go(0)
-						}, 2 * 1000)
+						}, 800)
 					})
-					.catch(() => {
-						this.$message({
-							type: 'info',
-							message: '已取消删除'
-						})
-					})
+					.catch(() => {}) // caugth error
 			})
 		}
 	}

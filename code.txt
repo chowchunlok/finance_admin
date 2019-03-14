@@ -1,6 +1,6 @@
 //all
 2000 success
- *40 Unknown Error
+ *40(41~) Unknown Error
 
 //register
 3001 User already exists! Cannot register repeatedly
@@ -21,6 +21,25 @@
 //info
 6040 
 6001 Admin Don't Exit
+
+//user
+//getData
+7040
+7001 Not have any user
+//delete
+7041 
+7002 No matched user to delete
+
+
+//news
+//release
+8040
+8001 Release Failed
+
+
+
+
+
 
 
 
