@@ -15,7 +15,11 @@ export const constantRouterMap = [
 		component: () => import('@/views/login/index'),
 		hidden: true
 	},
-	{ path: '/404', component: () => import('@/views/404'), hidden: true },
+	{
+		path: '/404',
+		component: () => import('@/views/404'),
+		hidden: true
+	},
 
 	{
 		path: '/',
@@ -48,7 +52,10 @@ export const constantRouterMap = [
 				path: 'feedback',
 				name: 'Feedback',
 				component: () => import('@/views/feedback/index'),
-				meta: { title: 'feedback', icon: 'feedback' }
+				meta: {
+					title: 'feedback',
+					icon: 'feedback'
+				}
 			}
 		]
 	},
@@ -67,10 +74,10 @@ export const constantRouterMap = [
 				meta: { title: 'edit', icon: 'form' }
 			},
 			{
-				path: 'newsItem',
+				path: 'newsList',
 				name: 'News',
 				component: () => import('@/views/news/index'),
-				meta: { title: 'newsItem', icon: 'item' }
+				meta: { title: 'newsList', icon: 'item' }
 			}
 		]
 	},
@@ -135,16 +142,18 @@ export const constantRouterMap = [
 		]
 	},
 
-	// {
-	// 	path: 'external-link',
-	// 	component: Layout,
-	// 	children: [
-	// 		{
-	// 			path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-	// 			meta: { title: 'External Link', icon: 'link' }
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/register',
+		meta: { title: 'register', icon: 'register' },
+		component: Layout,
+		name: 'Register',
+		children: [
+			{
+				path: '',
+				component: () => import('@/views/register/index')
+			}
+		]
+	},
 
 	{ path: '*', redirect: '/404', hidden: true }
 ]

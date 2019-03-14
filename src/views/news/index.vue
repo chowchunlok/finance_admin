@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>newsItem</h1>
+    <h1>newsList</h1>
   </div>
 </template>
 

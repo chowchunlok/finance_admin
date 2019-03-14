@@ -8,7 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
-      <h3 class="title">Tonghai管理后台</h3>
+      <h3 class="title">Finance Admin</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
@@ -45,30 +45,27 @@
           @click.native.prevent="handleLogin"
         >Sign in</el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span>password: admin</span>
-      </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+// import { isvalidUsername } from '@/utils/validate'
+import $api from 'axios'
 
 export default {
 	name: 'Login',
 	data() {
-		const validateUsername = (rule, value, callback) => {
-			if (!isvalidUsername(value)) {
-				callback(new Error('请输入正确的用户名'))
-			} else {
-				callback()
-			}
-		}
+		// const validateUsername = (rule, value, callback) => {
+		// 	if (!isvalidUsername(value)) {
+		// 		callback(new Error('Please enter the correct username'))
+		// 	} else {
+		// 		callback()
+		// 	}
+		// }
 		const validatePass = (rule, value, callback) => {
 			if (value.length < 5) {
-				callback(new Error('密码不能小于5位'))
+				callback(new Error('Password cannot be less than 5 digits'))
 			} else {
 				callback()
 			}
@@ -79,9 +76,7 @@ export default {
 				password: ''
 			},
 			loginRules: {
-				username: [
-					{ required: true, trigger: 'blur', validator: validateUsername }
-				],
+				username: [{ required: true, trigger: 'blur' }],
 				password: [{ required: true, trigger: 'blur', validator: validatePass }]
 			},
 			loading: false,
@@ -106,23 +101,25 @@ export default {
 			}
 		},
 		handleLogin() {
-			this.$refs.loginForm.validate(valid => {
-				if (valid) {
-					this.loading = true
-					this.$store
-						.dispatch('Login', this.loginForm)
-						.then(() => {
-							this.loading = false
-							this.$router.push({ path: this.redirect || '/' })
-						})
-						.catch(() => {
-							this.loading = false
-						})
-				} else {
-					console.log('error submit!!')
-					return false
-				}
-			})
+			// this.$refs.loginForm.validate(valid => {
+			// 	if (valid) {
+			this.loading = true
+			this.$store
+				.dispatch('Login', this.loginForm)
+				.then(res => {
+					this.loading = false
+					console.log(res)
+					this.$router.push({ path: this.redirect || '/' })
+				})
+				.catch(err => {
+					console.log(err)
+					this.loading = false
+				})
+			// 	} else {
+			// 		console.log('error submit!!')
+			// 		return false
+			// 	}
+			// })
 		}
 	}
 }

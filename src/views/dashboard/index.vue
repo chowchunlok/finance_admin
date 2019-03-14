@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">Title:{{ name }}</div>
+    <div class="dashboard-text">Name:{{ name }}</div>
     <div class="dashboard-text">
-      Authority:
+      Role:
       <span v-for="role in roles" :key="role">{{ role }}</span>
     </div>
   </div>
