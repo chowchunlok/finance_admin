@@ -28,7 +28,7 @@ service.interceptors.request.use(
 	error => {
 		// Do something with request error
 		console.log(error) // for debug
-		Promise.reject(error)
+		return Promise.reject(error)
 	}
 )
 
@@ -36,36 +36,64 @@ service.interceptors.request.use(
 service.interceptors.response.use(
 	response => {
 		/**
-		 * code为非2000是抛错 可结合自己业务进行修改
+		 * code为非2000是抛错
 		 */
 		const res = response.data
 		if (res.code !== 2000) {
-			// 5008:非法的token; 5012:其他客户端登录了;  5014:Token 过期了;
-			if (res.code === 5008 || res.code === 5012 || res.code === 5014) {
-				MessageBox.confirm(
-					'你已被登出，可以取消继续留在该页面，或者重新登录',
-					'确定登出',
-					{
-						confirmButtonText: '重新登录',
-						cancelButtonText: '取消',
-						type: 'warning'
-					}
-				).then(() => {
+			// 5003:illegal token; 5002:Other Client are log in; 5001:Token expired; 5000:invalid Token (Match All Situation);
+			if (
+				res.code === 5000 ||
+				res.code === 5003 ||
+				res.code === 5002 ||
+				res.code === 5001 ||
+				res.code === 5040
+			) {
+				MessageBox.confirm(`${res.message}`, 'To Logout', {
+					confirmButtonText: 'Re-login',
+					cancelButtonText: 'Cancel',
+					type: 'warning'
+				}).then(() => {
 					store.dispatch('FedLogOut').then(() => {
 						location.reload() // 为了重新实例化vue-router对象 避免bug
 					})
 				})
 			}
 
-			if (res.code === 4004 || res.code === 4010) {
-				MessageBox.confirm('密码错误或者账号不存在', '重新登录', {
-					confirmButtonText: '重新登录',
-					cancelButtonText: '取消',
+			// 登录错误
+			if (res.code === 4001 || res.code === 4002 || res.code === 4040) {
+				MessageBox.confirm(`${res.message}`, 'Login Failed', {
+					confirmButtonText: 'Re-login',
+					cancelButtonText: 'Cancel',
 					type: 'error'
 				})
 			}
+
+			// 注册错误
+			if (res.code === 3002 || res.code === 3040 || res.code === 3001) {
+				MessageBox.confirm(`${res.message}`, 'Register Failed', {
+					confirmButtonText: 'Re-register',
+					cancelButtonText: 'Cancel',
+					type: 'error'
+				})
+			}
+
+			// 获取管理员信息错误
+			if (res.code === 6001 || res.code === 6040) {
+				MessageBox.confirm(`${res.message}`, 'Login Off', {
+					confirmButtonText: 'Re-login',
+					cancelButtonText: 'Cancel',
+					type: 'error'
+				}).then(() => {
+					store.dispatch('FedLogOut').then(() => {
+						location.reload()
+					})
+				})
+			}
+
+			// Unified processing error
 			return Promise.reject('error')
 		} else {
+			// Register Success
 			return response.data
 		}
 	},

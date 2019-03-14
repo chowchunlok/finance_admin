@@ -18,6 +18,12 @@
           <el-option label="editor" value="editor"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="avatar" prop="img">
+        <el-select v-model="registerForm.avatar" placeholder="Please select an avatar">
+          <el-option label="admin.jpg" value="admin.jpg"></el-option>
+          <el-option label="editor.jpg" value="editor.jpg"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="password" prop="pass">
         <el-input type="password" v-model="registerForm.password" auto-complete="off"></el-input>
       </el-form-item>
@@ -33,7 +39,6 @@
 </template>
 <script>
 import { Message, MessageBox } from 'element-ui'
-// import { mapActions } from 'vuex'
 export default {
 	data() {
 		var validatePass1 = (rule, value, callback) => {
@@ -67,6 +72,7 @@ export default {
 			registerForm: {
 				name: '',
 				roles: [],
+				avatar: '',
 				password: '',
 				checkPass: ''
 			},
@@ -78,10 +84,6 @@ export default {
 						trigger: 'blur',
 						validator: validatePass1
 					}
-					// {
-					// 	validator: validatePass1,
-					// 	trigger: 'blur'
-					// }
 				],
 				checkPass: [
 					{
@@ -90,16 +92,11 @@ export default {
 						trigger: 'blur',
 						validator: validatePass2
 					}
-					// {
-					// 	validator: validatePass2,
-					// 	trigger: 'blur'
-					// }
 				]
 			}
 		}
 	},
 	methods: {
-		// ...mapActions('user', ['register']),
 		resetForm(formName) {
 			this.$refs[formName].resetFields()
 		},
@@ -110,20 +107,18 @@ export default {
 					this.$store
 						.dispatch('Register', data) // store ----> api
 						.then(res => {
-							if (res.success) {
+							if (res.code === 2000) {
 								Message({
 									type: 'success',
-									message: `register success`
+									message: `Register Success`
 								})
-							} else {
-								MessageBox.confirm({
-									type: 'error',
-									message: 'Account already exists'
-								})
+								setTimeout(() => {
+									this.$router.push('/')
+								}, 1000)
 							}
 						})
 						.catch(err => {
-							console.log(err)
+							console.log('register serr:', err) //TODO: debug
 						})
 				} else {
 					console.log('error submit!!')

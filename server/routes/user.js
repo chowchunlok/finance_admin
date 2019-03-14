@@ -3,13 +3,13 @@ var router = express.Router()
 var model = require('../db/db')
 
 // 获取用户数据
-router.get('/', function(req, res) {
+router.get('/getDatas', function(req, res) {
 	model.User.find({}, (err, doc) => {
 		if (err) {
+			console.log('user:', err) //TODO:
 			res.json({
-				status: 4000,
-				success: false,
-				message: err.message
+				status: 7040,
+				message: 'Unknown Error'
 			})
 		} else {
 			res.json({

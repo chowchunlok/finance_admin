@@ -31,12 +31,14 @@ const user = {
 		Register({ commit }, adminInfo) {
 			adminInfo.rules = [].push(adminInfo.rules)
 			return new Promise((resolve, reject) => {
-				register()
+				// console.log(register(adminInfo)) // TODO:
+				register(adminInfo)
 					.then(response => {
-						console.log(response)
-						resolve()
+						console.log(response) //TODO:
+						resolve(response)
 					})
 					.catch(error => {
+						console.log(error) //TODO:
 						reject(error)
 					})
 			})

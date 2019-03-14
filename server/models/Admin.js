@@ -2,10 +2,11 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var newSchema = new Schema({
-	username: String,
+	name: String,
 	password: String,
-	role: Array,
-	create_time: String
+	roles: Array,
+	create_time: String,
+	avatar: String
 })
 
 module.exports = mongoose.model('Admin', newSchema)
