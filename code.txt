@@ -1,6 +1,6 @@
 //all
 2000 success
- *40(41~) Unknown Error
+ *40(41~) Unknown Error //
 
 //register
 3001 User already exists! Cannot register repeatedly
