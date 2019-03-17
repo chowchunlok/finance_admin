@@ -89,7 +89,7 @@ export default {
           this.listLoading = false
         })
         .catch(err => {
-          console.log(err) // TODO:
+          console.log(err) // CHECK fetchUserData ERROR
         })
     },
     handleDelete(index, row) {

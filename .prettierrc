@@ -1,19 +1,19 @@
 {
-	"printWidth": 800,
-	"tabWidth": 2,
-	"useTabs": false,
-	"semi": false,
-	"singleQuote": true,
-	"jsxSingleQuote": true,
-	"trailingComma": "none",
-	"bracketSpacing": true,
-	"jsxBracketSameLine": false,
-	"arrowParens": "avoid",
-	"proseWrap": "always",
-	"overrides": [
-		{
-			"files": ".prettierrc",
-			"options": { "parser": "json" }
-		}
-	]
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "arrowParens": "avoid",
+  "proseWrap": "always",
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    }
+  ]
 }
