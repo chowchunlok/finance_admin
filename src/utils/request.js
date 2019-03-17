@@ -6,12 +6,11 @@ import { getToken } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000 // 请求超时时间
+  timeout: 5000 // 请求超时时间 NOTE: timeout
 })
 
-// content-type
-service.defaults.headers.post['Content-Type'] = 'application/json'
-service.defaults.headers.put['Content-Type'] = 'application/json'
+// Content-Type
+console.log('service.defaults.headers', service.defaults.headers) //CHECK: service.defaults.headers
 
 // request拦截器
 service.interceptors.request.use(
@@ -19,15 +18,11 @@ service.interceptors.request.use(
     if (store.getters.token) {
       config.headers.Authorization = `token ${getToken()}`
     }
-    if (config.method === 'post' || config.method === 'put') {
-      // Before post、put is sented，transform them(Object) to string, to handle java back-stage parsing issues
-      config.data = JSON.stringify(config.data)
-    }
     return config
   },
   error => {
     // Do something with request error
-    console.log(error) // for debug
+    console.log('service.interceptors.request ERROR', error) // DEBUG: service.interceptors.request ERROR
     return Promise.reject(error)
   }
 )
@@ -42,8 +37,14 @@ service.interceptors.response.use(
 
     if (res.code !== 2000) {
       // Token认证管理
-      // 5003:illegal token; 5002:Other Client are log in; 5001:Token expired; 5000:invalid Token (Match All Situation);
-      if (res.code === 5000 || res.code === 5003 || res.code === 5002 || res.code === 5001 || res.code === 5040) {
+      // 5003:illegal token; 5002:other client are log in; 5001:token expired; 5000:invalid token (match all situation);
+      if (
+        res.code === 5000 ||
+        res.code === 5003 ||
+        res.code === 5002 ||
+        res.code === 5001 ||
+        res.code === 5040
+      ) {
         MessageBox.confirm(`${res.message}`, 'To Logout', {
           confirmButtonText: 'Re-login',
           cancelButtonText: 'Cancel',
@@ -96,7 +97,7 @@ service.interceptors.response.use(
         })
       }
       // 用户反馈
-      //TODO:
+      //TODO:user feedback
 
       // 新闻
       // 新闻发布
@@ -108,18 +109,16 @@ service.interceptors.response.use(
         })
       }
       // 新闻删除
-      //TODO:
+      //TODO:delete news
 
       // Unified processing error
       return Promise.reject('error')
     } else {
-      // Register Success
-      // console.log(response.data) //TODO:
       return res
     }
   },
   error => {
-    console.log(error) // for debug
+    console.log('service.interceptors.error:', error) //DEBUG: interceptors.error
     Message({
       message: error.message,
       type: 'error',
