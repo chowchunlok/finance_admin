@@ -160,8 +160,7 @@ export default {
     // 上传地址
     url: {
       type: String,
-      //NOTE: upload url?
-      default: '/api/avatar/upload'
+      default: ''
     },
     // 其他要上传文件附带的数据，对象格式
     params: {
@@ -170,19 +169,18 @@ export default {
     },
     // Add custom headers
     headers: {
-      //NOTE headers
       type: Object,
       default: null
     },
     // 剪裁图片的宽
     width: {
       type: Number,
-      default: 100
+      default: 200
     },
     // 剪裁图片的高
     height: {
       type: Number,
-      default: 100
+      default: 200
     },
     // 不显示旋转功能
     noRotate: {
@@ -197,17 +195,17 @@ export default {
     // 不预览方形图片
     noSquare: {
       type: Boolean,
-      default: true
+      default: false
     },
     // 单文件大小限制
     maxSize: {
       type: Number,
-      default: 10240000 //NOTE:maxSize
+      default: 10240
     },
     // 语言类型
     langType: {
       type: String,
-      default: 'en'
+      default: 'zh'
     },
     // 语言包
     langExt: {
@@ -217,7 +215,7 @@ export default {
     // 图片上传格式
     imgFormat: {
       type: String,
-      default: 'jpg'
+      default: 'png'
     },
     // 是否支持跨域
     withCredentials: {
@@ -248,7 +246,6 @@ export default {
       lang,
       // 浏览器是否支持该控件
       isSupported,
-
       // 浏览器是否支持触屏事件
       isSupportTouch: document.hasOwnProperty('ontouchstart'),
       // 步骤
@@ -437,7 +434,6 @@ export default {
       e.preventDefault()
       if (this.loading !== 1) {
         const files = e.target.files || e.dataTransfer.files
-        console.log('fileList:', files) //CHECK:avatar files
         this.reset()
         if (this.checkFile(files[0])) {
           this.setSourceImg(files[0])
@@ -447,7 +443,6 @@ export default {
     /* ---------------------------------------------------------------*/
     // 检测选择的文件是否合适
     checkFile(file) {
-      console.log('checkfile:', file) //CHECK: checkfile file
       let that = this,
         { lang, maxSize } = that
       // 仅限图片
@@ -727,7 +722,7 @@ export default {
       ctx.rotate((Math.PI * degree) / 180)
       ctx.translate(-that.width * 0.5, -that.height * 0.5)
       ctx.drawImage(sourceImg, x / scale, y / scale, width / scale, height / scale)
-      that.createImgUrl = canvas.toDataURL(mime) //将img的url转化为base64
+      that.createImgUrl = canvas.toDataURL(mime)
     },
     prepareUpload() {
       const { url, createImgUrl, field, ki } = this
@@ -754,8 +749,7 @@ export default {
           withCredentials
         } = this,
         fmData = new FormData()
-      fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat) //上传前转换为blob格式
-
+      fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat)
       // 添加其他参数
       if (typeof params === 'object' && params) {
         Object.keys(params).forEach(k => {
@@ -775,17 +769,14 @@ export default {
       request({
         url,
         method: 'post',
-        data: fmData,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        data: fmData
       })
         .then(resData => {
-          console.log('upload resData:', resData) //CHECK upload resData
           that.loading = 2
-          that.$emit('crop-upload-success', resData.data)
+          that.$emit('crop-upload-success', resData)
         })
         .catch(err => {
+          console.log(err)
           if (that.value) {
             that.loading = 3
             that.hasError = true
@@ -881,7 +872,6 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
-  /* imageCropper TODO: width */
   width: 600px;
   height: 330px;
   padding: 25px;
@@ -1597,7 +1587,6 @@ export default {
 }
 .vue-image-crop-upload .vicp-wrap .vicp-operate a:hover {
   background-color: rgba(0, 0, 0, 0.03);
-  cursor: pointer;
 }
 .vue-image-crop-upload .vicp-wrap .vicp-error,
 .vue-image-crop-upload .vicp-wrap .vicp-success {

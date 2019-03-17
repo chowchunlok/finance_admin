@@ -5,18 +5,17 @@
     <el-button
       type="primary"
       icon="upload"
+      style="position: absolute;bottom: 15px;margin-left: 40px;"
       @click="imagecropperShow=true"
       plain
-      size="mini"
-      class="button"
-    >Upload</el-button>
-    <!-- NOTE:url/field -->
+    >upload</el-button>
+
     <image-cropper
       v-show="imagecropperShow"
-      :width="100"
-      :height="100"
+      :width="300"
+      :height="300"
       :key="imagecropperKey"
-      :field="'curry'"
+      :url="url"
       lang-type="en"
       @close="close"
       @crop-upload-success="cropSuccess"
@@ -35,15 +34,19 @@ export default {
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
-      image: '/static/images/default.jpg'
+      image: 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191',
+      url: '/api/avatar/upload'
     }
   },
   methods: {
     cropSuccess(resData) {
-      console.log('resData:', resData) //CHECK resData debug
       this.imagecropperShow = false
       this.imagecropperKey = this.imagecropperKey + 1
-      this.image = resData.files.avatar
+      // this.image = resData.files.avatar
+      // setTimeout(() => {
+      this.image = resData.filename
+      this.$emit('uploadAvatar', resData.filename)
+      // }, 1000)
     },
     close() {
       this.imagecropperShow = false
@@ -52,14 +55,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.components-container {
-  display: flex;
-  align-items: center;
-  .button {
-    margin-left: 20px;
-  }
-}
+<style scoped>
 .avatar {
   width: 200px;
   height: 200px;

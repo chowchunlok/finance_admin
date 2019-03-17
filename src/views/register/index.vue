@@ -13,7 +13,7 @@
         <el-input v-model="registerForm.name"></el-input>
       </el-form-item>
       <el-form-item label="Avatar">
-        <AvatarUpload/>
+        <AvatarUpload @uploadAvatar="uploadAvatar"/>
       </el-form-item>
       <el-form-item label="Roles">
         <el-select v-model="registerForm.roles" placeholder="Please select the role">
@@ -21,12 +21,6 @@
           <el-option label="Editor" value="editor"></el-option>
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="avatar" prop="img">
-        <el-select v-model="registerForm.avatar" placeholder="Please select an avatar">
-          <el-option label="admin.jpg" value="admin.jpg"></el-option>
-          <el-option label="editor.jpg" value="editor.jpg"></el-option>
-        </el-select>
-      </el-form-item>-->
       <el-form-item label="Password" prop="pass">
         <el-input type="password" v-model="registerForm.password" auto-complete="off"></el-input>
       </el-form-item>
@@ -43,11 +37,9 @@
 <script>
 import { Message, MessageBox } from 'element-ui'
 import AvatarUpload from '@/components/AvatarUpload'
-import AvatarDemo from '@/components/AvatarDemo'
 export default {
   components: {
-    AvatarUpload,
-    AvatarDemo
+    AvatarUpload
   },
   data() {
     var validatePass1 = (rule, value, callback) => {
@@ -78,8 +70,8 @@ export default {
     return {
       registerForm: {
         name: '',
-        roles: [],
         avatar: '',
+        roles: [],
         password: '',
         checkPass: ''
       },
@@ -125,13 +117,16 @@ export default {
               }
             })
             .catch(err => {
-              console.log('register index.vue err:', err) //DEBUG register index.vue err debug
+              console.log('register index.vue err:', err) //DEBUG: register index.vue err debug
             })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    uploadAvatar(avatarUrl) {
+      this.registerForm.avatar = avatarUrl
     }
   }
 }

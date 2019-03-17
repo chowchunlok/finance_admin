@@ -6,11 +6,11 @@ import { getToken } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 50000 // 请求超时时间 TODO: upload avatar?
+  timeout: 5000 // 请求超时时间 NOTE: timeout
 })
 
 // Content-Type
-console.log('service.defaults.headers', service.defaults.headers) //CHECK service.defaults.headers
+console.log('service.defaults.headers', service.defaults.headers) //CHECK: service.defaults.headers
 
 // request拦截器
 service.interceptors.request.use(
@@ -18,15 +18,11 @@ service.interceptors.request.use(
     if (store.getters.token) {
       config.headers.Authorization = `token ${getToken()}`
     }
-    if (config.method === 'post' || config.method === 'put') {
-      // Before post、put is sented，transform them(Object) to string, to handle java back-stage parsing issues
-      config.data = JSON.stringify(config.data)
-    }
     return config
   },
   error => {
     // Do something with request error
-    console.log(error) // for debug
+    console.log('service.interceptors.request ERROR', error) // DEBUG: service.interceptors.request ERROR
     return Promise.reject(error)
   }
 )
@@ -122,7 +118,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('service.interceptors.error:', error) //DEBUG:interceptors.error
+    console.log('service.interceptors.error:', error) //DEBUG: interceptors.error
     Message({
       message: error.message,
       type: 'error',

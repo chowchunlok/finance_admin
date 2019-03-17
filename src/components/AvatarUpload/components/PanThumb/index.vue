@@ -23,11 +23,11 @@ export default {
     },
     width: {
       type: String,
-      default: '35px'
+      default: '40px'
     },
     height: {
       type: String,
-      default: '35px'
+      default: '40px'
     }
   }
 }
@@ -135,8 +135,7 @@ export default {
 }
 
 .pan-item:hover .pan-thumb {
-  /* transform: rotate(-110deg); */
-  transform: scale(1.1);
+  transform: rotate(-110deg);
 }
 
 .pan-item:hover .pan-info p a {

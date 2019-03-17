@@ -34,11 +34,11 @@ const user = {
       return new Promise((resolve, reject) => {
         register(adminInfo)
           .then(response => {
-            console.log('register response', response) //CHECK admininfo response
+            console.log('register response', response) //CHECK: admininfo response
             resolve(response)
           })
           .catch(error => {
-            console.log('register error', error) //CHECK admininfo response
+            console.log('register error', error) //CHECK: admininfo response
             reject(error)
           })
       })
