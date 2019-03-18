@@ -1,41 +1,63 @@
 <template>
-  <el-upload
-    class="upload-demo"
-    action="/api/avatar/upload"
-    :on-preview="handlePreview"
-    :on-remove="handleRemove"
-    :file-list="fileList2"
-    :headers="{'Access-Control-Allow-Origin': true}"
-    list-type="picture"
-    name="avatar"
-  >
-    <el-button size="small" type="primary">点击上传</el-button>
-    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-  </el-upload>
+  <div class="components-container">
+    <pan-thumb :image="image"/>
+
+    <el-button
+      type="primary"
+      icon="upload"
+      style="position: absolute;bottom: 15px;margin-left: 20px;"
+      @click="imagecropperShow=true"
+      size="mini"
+      plain
+    >Upload</el-button>
+    <!-- NOTE: width/height demintion 300/300-->
+    <image-cropper
+      v-show="imagecropperShow"
+      :width="200"
+      :height="200"
+      :key="imagecropperKey"
+      :url="url"
+      lang-type="en"
+      @close="close"
+      @crop-upload-success="cropSuccess"
+    />
+  </div>
 </template>
 
 <script>
+import ImageCropper from './components/ImageCropper'
+import PanThumb from './components/PanThumb'
+
 export default {
+  name: 'AvatarUploadDemo',
+  components: { ImageCropper, PanThumb },
   data() {
     return {
-      fileList2: [
-        {
-          name: 'food.jpeg',
-          url: '/static/images/editor.jpg'
-        }
-      ]
+      imagecropperShow: false,
+      imagecropperKey: 0,
+      image: '/static/images/default.png',
+      url: '/api/avatar/upload'
     }
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
+    cropSuccess(resData) {
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
+      this.image = resData.filename
+      this.$emit('uploadAvatar', resData.filename)
     },
-    handlePreview(file) {
-      console.log(file)
+    close() {
+      this.imagecropperShow = false
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
+<style scoped>
+.avatar {
+  /* width: 200px;
+  height: 200px;
+  border-radius: 50%; */
+}
 </style>
+

@@ -44,8 +44,7 @@
 
 <script>
 import { getList } from '@/api/table'
-import { getUserData, deleteUser } from '@/api/user'
-import $api from 'axios'
+import { datalist, remove } from '@/api/user'
 import { resolve, reject } from 'q'
 
 export default {
@@ -78,8 +77,7 @@ export default {
       })
     },
     fetchUserData() {
-      console.log(getUserData())
-      getUserData()
+      datalist()
         .then(res => {
           this.list = res.data
           this.list.forEach(item => {
@@ -98,7 +96,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUser({ email: row.email })
+        remove({ email: row.email })
           .then(res => {
             this.$message({
               type: 'success',

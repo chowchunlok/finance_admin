@@ -3,10 +3,10 @@ var router = express.Router()
 var model = require('../db/db')
 
 // 发布新闻
-router.post('/release', function(req, res) {
+router.post('/publish', function(req, res) {
   model.News.find({}, (err, doc) => {
     if (err) {
-      console.log('release_err 8040:', err) //DEBUG:release_err 8040
+      console.log('publish_err 8040:', err) //DEBUG:publish_err 8040
       res.json({
         code: 8040,
         message: 'Database Error'
@@ -22,7 +22,7 @@ router.post('/release', function(req, res) {
       newsList.push(target)
       doc[0].save((err, pro) => {
         if (err) {
-          console.log('release_save 8001', err) //DEBUG:release_SAVE 8001
+          console.log('publish_save 8001', err) //DEBUG:publish_SAVE 8001
           res.json({
             code: 8001,
             message: 'Data Save Failed'
@@ -37,5 +37,8 @@ router.post('/release', function(req, res) {
     }
   })
 })
+
+//删除新闻 TODO: routes > delete news
+router.post('/remove', function(req, res) {})
 
 module.exports = router

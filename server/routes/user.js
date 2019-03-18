@@ -3,10 +3,10 @@ var router = express.Router()
 var model = require('../db/db')
 
 // 获取用户数据
-router.get('/getData', function(req, res) {
+router.get('/datalist', function(req, res) {
   model.User.find({}, (err, doc) => {
     if (err) {
-      console.log('getData 7040:', err) //DEBUG:getData 7040
+      console.log('data 7040:', err) //DEBUG:data 7040
       res.json({
         code: 7040,
         message: 'Unknown Error'
@@ -28,11 +28,11 @@ router.get('/getData', function(req, res) {
 })
 
 // 删除用户
-router.post('/delete', function(req, res) {
+router.post('/remove', function(req, res) {
   model.User.deleteOne({ email: req.body.email }, (err, doc) => {
     console.log(err, doc)
     if (err || doc.ok === 0) {
-      console.log('delete 7041', err, doc) //DEBUG:getData 7040
+      console.log('remove 7041', err, doc) //DEBUG:getData 7040
       res.json({
         code: 7041,
         message: 'Unknown Error'
@@ -47,11 +47,14 @@ router.post('/delete', function(req, res) {
       } else {
         res.json({
           code: 7002,
-          message: 'No matched user to delete'
+          message: 'No matched user to remove'
         })
       }
     }
   })
 })
+
+// 用户详细信息 TODO: routes > user's details
+router.get('/details', function(req, res) {})
 
 module.exports = router

@@ -28,8 +28,8 @@
         <el-input type="password" v-model="registerForm.checkPass" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('registerForm')" plain>Register</el-button>
-        <el-button @click="resetForm('registerForm')" plain>Reset</el-button>
+        <el-button type="primary" @click="submitForm('registerForm')" size="small" plain>Register</el-button>
+        <el-button @click="resetForm('registerForm')" size="small" plain>Reset</el-button>
       </el-form-item>
     </el-form>
   </div>

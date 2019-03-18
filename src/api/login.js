@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/api/admin/login',
+    url: '/api/login',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
@@ -14,16 +14,16 @@ export function login(username, password) {
   })
 }
 
-export function getInfo() {
+export function loginInfo() {
   return request({
-    url: '/api/admin/info',
+    url: '/api/login/loginInfo',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: '/api/admin/logout',
+    url: '/api/login/logout',
     method: 'post'
   })
 }

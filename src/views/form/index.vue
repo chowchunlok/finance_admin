@@ -39,54 +39,54 @@
 
 <script>
 // import $api from 'axios'
-import { release } from '@/api/news'
+import { publish } from '@/api/news'
 export default {
-	data() {
-		return {
-			form: {
-				summary: '',
-				editor: '',
-				date: '',
-				url: 'newsDetail/',
-				artical: '',
-				image: '',
-				image_min: ''
-			}
-		}
-	},
-	methods: {
-		onSubmit() {
-			this.$confirm(`确定发表新闻?`, '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			})
-				.then(() => {
-					release({ data: this.form })
-						.then(res => {
-							this.$message({
-								message: res.message,
-								type: 'success',
-								duration: 3 * 1000
-							})
-						})
-						.catch(err => {})
-				})
-				.catch(() => {})
-		},
-		onCancel() {
-			this.$message({
-				message: 'cancel!',
-				type: 'warning'
-			})
-		}
-	}
+  data() {
+    return {
+      form: {
+        summary: '',
+        editor: '',
+        date: '',
+        url: 'newsDetail/',
+        artical: '',
+        image: '',
+        image_min: ''
+      }
+    }
+  },
+  methods: {
+    onSubmit() {
+      this.$confirm(`确定发表新闻?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          publish({ data: this.form })
+            .then(res => {
+              this.$message({
+                message: res.message,
+                type: 'success',
+                duration: 3 * 1000
+              })
+            })
+            .catch(err => {})
+        })
+        .catch(() => {})
+    },
+    onCancel() {
+      this.$message({
+        message: 'cancel!',
+        type: 'warning'
+      })
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .line {
-	text-align: center;
+  text-align: center;
 }
 </style>
 

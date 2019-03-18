@@ -5,15 +5,16 @@
     <el-button
       type="primary"
       icon="upload"
-      style="position: absolute;bottom: 15px;margin-left: 40px;"
+      style="position: absolute;bottom: 15px;margin-left: 20px;"
       @click="imagecropperShow=true"
+      size="mini"
       plain
-    >upload</el-button>
-
+    >Upload</el-button>
+    <!-- NOTE: width/height demintion 300/300-->
     <image-cropper
       v-show="imagecropperShow"
-      :width="300"
-      :height="300"
+      :width="200"
+      :height="200"
       :key="imagecropperKey"
       :url="url"
       lang-type="en"
@@ -34,19 +35,16 @@ export default {
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
-      image: 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191',
-      url: '/api/avatar/upload'
+      image: '/static/images/default.png',
+      url: '/api/register/upload'
     }
   },
   methods: {
     cropSuccess(resData) {
       this.imagecropperShow = false
       this.imagecropperKey = this.imagecropperKey + 1
-      // this.image = resData.files.avatar
-      // setTimeout(() => {
       this.image = resData.filename
       this.$emit('uploadAvatar', resData.filename)
-      // }, 1000)
     },
     close() {
       this.imagecropperShow = false
@@ -57,9 +55,9 @@ export default {
 
 <style scoped>
 .avatar {
-  width: 200px;
+  /* width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 50%; */
 }
 </style>
 

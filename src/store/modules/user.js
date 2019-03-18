@@ -1,10 +1,8 @@
-import { login, logout, getInfo } from '@/api/login'
-import { register } from '@/api/register'
+import { login, logout, loginInfo } from '@/api/login'
+import { registerInfo } from '@/api/register'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { Message } from 'element-ui'
 
 const user = {
-  // namespaced: true,
   state: {
     token: getToken(),
     name: '',
@@ -32,13 +30,13 @@ const user = {
     Register({ commit }, adminInfo) {
       adminInfo.rules = [].push(adminInfo.rules)
       return new Promise((resolve, reject) => {
-        register(adminInfo)
+        registerInfo(adminInfo)
           .then(response => {
-            console.log('register response', response) //CHECK: admininfo response
+            console.log('registerInfo response', response) //CHECK: admininfo response
             resolve(response)
           })
           .catch(error => {
-            console.log('register error', error) //CHECK: admininfo response
+            console.log('registerInfo error', error) //CHECK: admininfo response
             reject(error)
           })
       })
@@ -50,8 +48,6 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password) // api ---> 后端返回token
           .then(response => {
-            // const data = response.data
-            // console.log(data)
             setToken(response.token) // set cookie token
             commit('SET_TOKEN', response.token) // set store token
             resolve()
@@ -65,7 +61,7 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo()
+        loginInfo()
           .then(response => {
             const data = response.data
             if (data.roles && data.roles.length > 0) {
