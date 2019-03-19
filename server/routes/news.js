@@ -38,7 +38,4 @@ router.post('/publish', function(req, res) {
   })
 })
 
-//删除新闻 TODO: routes > delete news
-router.post('/remove', function(req, res) {})
-
-module.exports = router
+model.exports = router

@@ -65,21 +65,21 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/users/member',
     name: 'Users',
-    meta: { title: 'users', icon: 'user' },
+    meta: { title: 'Users', icon: 'user' },
     children: [
       {
-        path: 'member',
-        name: 'Table',
-        component: () => import('@/views/user/index'),
-        meta: { title: 'member', icon: 'member' }
+        path: 'list',
+        name: 'Users List',
+        component: () => import('@/views/users/list/index'),
+        meta: { title: 'Users List', icon: 'list' }
       },
       {
-        path: 'feedback',
-        name: 'Feedback',
-        component: () => import('@/views/feedback/index'),
+        path: 'details',
+        name: 'Users Details',
+        component: () => import('@/views/users/details/index'),
         meta: {
-          title: 'feedback',
-          icon: 'feedback'
+          title: 'Users Details',
+          icon: 'details'
         }
       }
     ]
@@ -88,98 +88,32 @@ export const constantRouterMap = [
   //Charts
   chartsRouter,
 
-  //News
+  //Article
   {
-    path: '/news',
+    path: '/article',
     component: Layout,
-    redirect: '/news/edit',
-    name: 'News',
-    meta: { title: 'news', icon: 'news' },
+    redirect: '/article/list',
+    name: 'Article',
+    meta: { title: 'Article', icon: 'article', roles: ['editor'] },
     children: [
+      {
+        path: 'create',
+        name: 'Create Article',
+        component: () => import('@/views/article/create'),
+        meta: { title: 'Create Article', icon: 'create' }
+      },
+      {
+        path: 'list',
+        name: 'Article List',
+        component: () => import('@/views/article/list'),
+        meta: { title: 'Article List', icon: 'list' }
+      },
       {
         path: 'edit',
-        name: 'Edit',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'edit', icon: 'form' }
-      },
-      {
-        path: 'newsList',
-        name: 'News',
-        component: () => import('@/views/news/index'),
-        meta: { title: 'newsList', icon: 'newsList' }
-      }
-    ]
-  },
-
-  //Nested TODO complete nested
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  //Register
-  {
-    path: '/register',
-    meta: { title: 'register', icon: 'register' },
-    component: Layout,
-    name: 'Register',
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/register/index')
+        name: 'Article Edit',
+        component: () => import('@/views/article/edit'),
+        meta: { title: 'Article Edit', icon: 'edit' },
+        hidden: true
       }
     ]
   },
@@ -192,3 +126,14 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+  //Register
+  {
+    path: '/register',
+    meta: { title: 'Register', icon: 'register', roles: ['admin'] },
+    component: Layout,
+    name: 'Register',
+    component: () => import('@/views/register/index')
+  }
+]

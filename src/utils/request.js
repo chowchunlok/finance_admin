@@ -10,7 +10,7 @@ const service = axios.create({
 })
 
 // Content-Type
-console.log('service.defaults.headers', service.defaults.headers) //CHECK: service.defaults.headers
+// console.log('service.defaults.headers', service.defaults.headers) //CHECK: service.defaults.headers
 
 // request拦截器
 service.interceptors.request.use(
