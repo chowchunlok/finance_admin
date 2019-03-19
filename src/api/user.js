@@ -1,26 +1,26 @@
 import request from '@/utils/request'
 
-export function datalist(params = {}) {
+export function fetchUsers(params = {}) {
   return request({
-    url: '/api/user/datalist',
+    url: '/api/user/fetchUsers',
     method: 'get',
     params
   })
 }
 
-export function remove(data = {}) {
+export function deleteUser(data = {}) {
   return request({
-    url: '/api/user/remove',
+    url: '/api/user/delete',
     method: 'post',
-    data: data
+    data
   })
 }
 
-export function details(data = {}) {
+export function details(params = {}) {
   //TODO: api > user details
   return request({
     url: '/api/user/details',
-    method: 'post',
-    data: data
+    method: 'get',
+    params
   })
 }
