@@ -5,7 +5,7 @@
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
-    "dev": "webpack-dev-server --open 'Google Chrome' --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "cross-env BABEL_ENV=development webpack-dev-server --open 'Google Chrome' --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
     "build:report": "npm_config_report=true npm run build",
@@ -43,6 +43,7 @@
     "chalk": "2.4.1",
     "compression-webpack-plugin": "2.0.0",
     "copy-webpack-plugin": "4.5.2",
+    "cross-env": "^5.2.0",
     "css-loader": "1.0.0",
     "eslint": "4.19.1",
     "eslint-friendly-formatter": "4.0.1",

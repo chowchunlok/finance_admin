@@ -50,8 +50,8 @@ export default {
       tinymceId: this.id,
       fullscreen: false,
       languageTypeList: {
-        'en': 'en',
-        'zh': 'zh_CN'
+        en: 'en',
+        zh: 'zh_CN'
       }
     }
   },
@@ -63,8 +63,7 @@ export default {
   watch: {
     value(val) {
       if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || ''))
+        this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
     },
     language() {
@@ -117,7 +116,7 @@ export default {
           })
         },
         setup(editor) {
-          editor.on('FullscreenStateChanged', (e) => {
+          editor.on('FullscreenStateChanged', e => {
             _this.fullscreen = e.state
           })
         }
@@ -187,7 +186,7 @@ export default {
   position: relative;
   line-height: normal;
 }
-.tinymce-container>>>.mce-fullscreen {
+.tinymce-container >>> .mce-fullscreen {
   z-index: 10000;
 }
 .tinymce-textarea {

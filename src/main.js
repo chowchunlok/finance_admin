@@ -21,6 +21,8 @@ import i18n from './lang'
 
 import * as filters from './filters' // global filters
 
+// import '../static/tinymce4.7.5/tinymce.min'
+
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
