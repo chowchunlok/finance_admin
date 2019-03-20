@@ -109,7 +109,7 @@ export const constantRouterMap = [
         meta: { title: 'Article List', icon: 'list' }
       },
       {
-        path: 'edit',
+        path: 'edit/:id',
         name: 'Article Edit',
         component: () => import('@/views/article/edit'),
         meta: { title: 'Article Edit', icon: 'edit' },
