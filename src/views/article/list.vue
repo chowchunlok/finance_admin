@@ -28,7 +28,7 @@
         <el-option
           v-for="item in calendarTypeOptions"
           :key="item.key"
-          :label="item.display_name+'('+item.key+')'"
+          :label="item.key"
           :value="item.key"
         />
       </el-select>
@@ -79,7 +79,7 @@
         width="65"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ String(scope.row.id) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.date')" width="150px" align="center">
@@ -175,7 +175,7 @@
     />
 
     <!-- 弹框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -243,22 +243,22 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchList, fetchPv, createArticle, updateArticle, deleteArticle } from '@/api/article'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { MessageBox } from 'element-ui'
 
 const calendarTypeOptions = [
-  { key: 'AD', display_name: 'Advert' },
-  { key: 'DL', display_name: 'Daily' },
-  { key: 'N', display_name: 'News' },
-  { key: 'FN', display_name: 'Finance' }
+  { key: 'Company', display_name: 'Company' },
+  { key: 'Daily', display_name: 'Daily' },
+  { key: 'News', display_name: 'News' },
+  { key: 'Finance', display_name: 'Finance' }
 ]
 
 // arr to obj ,such as { CN : "China", US : "USA" }
@@ -312,7 +312,7 @@ export default {
         type: '',
         status: 'published'
       },
-      dialogFormVisible: false,
+      // dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -352,32 +352,129 @@ export default {
     },
     handleModifyStatus(row, status) {
       //NOTE: FIXME: handleModifyStatus --> COMPLETE FEATURE
-      if (status) {
-        this.$confirm(`This Article Will be ${status.toUpperCase()}, Still Go On?`, 'Warning:', {
+      if (status === 'deleted') {
+        this.$confirm(`Permanently ${status.toUpperCase()} in Database?`, 'Warning', {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
           type: 'warning',
           center: true
         })
           .then(() => {
-            let id = row.id
-            updateArticle({ id, status })
+            // delete from database
+            deleteArticle(row.id)
               .then(res => {
                 this.$message({
                   type: 'success',
                   message: res.message
                 })
-                row.status = status
+                this.$router.go(0)
               })
-              .catch(err => {
-                this.$message({
-                  type: 'error',
-                  message: err.message
-                })
-              })
+              .catch(() => {})
           })
-          .catch(() => {})
+          .catch(() => {
+            // delete online
+            let online = ' Online'
+            if (status) {
+              this.$confirm(
+                `This Article Will be ${
+                  status !== 'draft' ? status.toUpperCase() + online : status.toUpperCase()
+                }, Still Go On?`,
+                'Warning:',
+                {
+                  confirmButtonText: 'Yes',
+                  cancelButtonText: 'No',
+                  type: 'warning',
+                  center: true
+                }
+              )
+                .then(() => {
+                  let id = row.id
+                  updateArticle({ id, status })
+                    .then(res => {
+                      this.$message({
+                        type: 'success',
+                        message: res.message
+                      })
+                      row.status = status
+                    })
+                    .catch(err => {
+                      this.$message({
+                        type: 'error',
+                        message: err.message
+                      })
+                    })
+                })
+                .catch(() => {})
+            }
+          })
+      } else {
+        let online = ' Online'
+        if (status) {
+          this.$confirm(
+            `This Article Will be ${
+              status !== 'draft' ? status.toUpperCase() + online : status.toUpperCase()
+            }, Still Go On?`,
+            'Warning:',
+            {
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              type: 'warning',
+              center: true
+            }
+          )
+            .then(() => {
+              let id = row.id
+              updateArticle({ id, status })
+                .then(res => {
+                  this.$message({
+                    type: 'success',
+                    message: res.message
+                  })
+                  row.status = status
+                })
+                .catch(err => {
+                  this.$message({
+                    type: 'error',
+                    message: err.message
+                  })
+                })
+            })
+            .catch(() => {})
+        }
       }
+      // let online = ' Online'
+      // if (status) {
+      //   this.$confirm(
+      //     `This Article Will be ${
+      //       status !== 'draft' ? status.toUpperCase() + online : status.toUpperCase()
+      //     }, Still Go On?`,
+      //     'Warning:',
+      //     {
+      //       confirmButtonText: 'Yes',
+      //       cancelButtonText: 'No',
+      //       type: 'warning',
+      //       center: true
+      //     }
+      //   )
+      //     .then(() => {
+      //       let id = row.id
+      //       updateArticle({ id, status })
+      //         .then(res => {
+      //           this.$message({
+      //             type: 'success',
+      //             message: res.message
+      //           })
+      //           row.status = status
+      //         })
+      //         .catch(err => {
+      //           this.$message({
+      //             type: 'error',
+      //             message: err.message
+      //           })
+      //         })
+      //     })
+      //     .catch(() => {})
+      // }
     },
     sortChange(data) {
       const { prop, order } = data
@@ -404,32 +501,32 @@ export default {
         type: ''
       }
     },
-    createData() {
-      this.$refs['dataForm'].validate(valid => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
+    // createData() {
+    //   this.$refs['dataForm'].validate(valid => {
+    //     if (valid) {
+    //       this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+    //       this.temp.author = 'vue-element-admin'
+    //       createArticle(this.temp).then(() => {
+    //         this.list.unshift(this.temp)
+    //         this.dialogFormVisible = false
+    //         this.$notify({
+    //           title: '成功',
+    //           message: '创建成功',
+    //           type: 'success',
+    //           duration: 2000
+    //         })
+    //       })
+    //     }
+    //   })
+    // },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      // this.dialogStatus = 'update'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {

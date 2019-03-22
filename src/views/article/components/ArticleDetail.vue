@@ -1,39 +1,39 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
+      <!-- 评论开关 发表 草稿 -->
       <sticky :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled"/>
-        <PlatformDropdown v-model="postForm.platforms"/>
-        <SourceUrlDropdown v-model="postForm.source_uri"/>
         <el-button
           v-loading="loading"
           style="margin-left: 10px;"
           type="success"
           @click="submitForm"
-        >发布</el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
+        >Publish</el-button>
+        <el-button v-loading="loading" type="warning" @click="draftForm">Draft</el-button>
       </sticky>
 
+      <!-- 文章内容 -->
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>标题</MDinput>
+              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>Title</MDinput>
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
+                  <el-form-item label-width="60px" label="Author: " class="postInfo-container-item">
                     <el-select
                       v-model="postForm.author"
-                      :remote-method="getRemoteUserList"
+                      :remote-method="getRemoteAuthorList"
                       filterable
                       remote
-                      placeholder="搜索用户"
+                      placeholder="Search Author"
                     >
                       <el-option
-                        v-for="(item,index) in userListOptions"
+                        v-for="(item,index) in authorListOptions"
                         :key="item+index"
                         :label="item"
                         :value="item"
@@ -42,19 +42,20 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="10">
-                  <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker
-                      v-model="postForm.display_time"
-                      type="datetime"
-                      format="yyyy-MM-dd HH:mm:ss"
-                      placeholder="选择日期时间"
-                    />
+                <el-col :span="8">
+                  <el-form-item label-width="45px" label="Type: " class="postInfo-container-item">
+                    <el-select v-model="postForm.type" filterable placeholder="Select Type">
+                      <el-option
+                        v-for="(item,index) in typeListOptions"
+                        :key="item+index"
+                        :label="item"
+                        :value="item"
+                      />
+                    </el-select>
                   </el-form-item>
                 </el-col>
-
                 <el-col :span="6">
-                  <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
+                  <el-form-item label-width="60px" label="Imp:" class="postInfo-container-item">
                     <el-rate
                       v-model="postForm.importance"
                       :max="3"
@@ -65,30 +66,41 @@
                     />
                   </el-form-item>
                 </el-col>
+
+                <el-col :span="10">
+                  <el-form-item
+                    label-width="100px"
+                    label="Display_time:"
+                    class="postInfo-container-item"
+                  >
+                    <el-date-picker
+                      v-model="postForm.display_time"
+                      type="datetime"
+                      format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="Select Release Date"
+                    />
+                  </el-form-item>
+                </el-col>
               </el-row>
             </div>
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="45px" label="摘要:">
+        <el-form-item style="margin-bottom: 40px;" label-width="80px" label="Summary:">
           <el-input
             :rows="1"
-            v-model="postForm.content_short"
+            v-model="postForm.summary"
             type="textarea"
             class="article-textarea"
             autosize
-            placeholder="请输入内容"
+            placeholder="Please enter the content"
           />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
+          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}characters</span>
         </el-form-item>
 
         <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" :height="400" v-model="postForm.content"/>
         </el-form-item>
-
-        <!-- <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="postForm.image_uri"/>
-        </el-form-item>-->
       </div>
     </el-form>
   </div>
@@ -96,38 +108,37 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-// import Upload from '@/components/Upload/singleImage3' //NOTE: import Upload
 import MDinput from '@/components/MDinput'
-import Sticky from '@/components/Sticky' // 粘性header组件
+import Sticky from '@/components/Sticky'
 import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { searchAuthor } from '@/api/article'
-import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
+import { fetchArticle, createArticle, updateArticle } from '@/api/article'
+import { searchAuthorList } from '@/api/article'
+import { CommentDropdown } from './Dropdown'
+import { parseTime } from '@/utils'
 
 const defaultForm = {
   status: 'draft',
-  title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  // image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
+  title: '',
+  content: '',
+  summary: '',
+  display_time: undefined,
   id: undefined,
-  platforms: ['a-platform'],
   comment_disabled: false,
-  importance: 0
+  importance: 0,
+  // extra
+  timestamp: undefined,
+  author: undefined,
+  type: '',
+  pageviews: 0
 }
 
 export default {
   name: 'ArticleDetail',
   components: {
     Tinymce,
-    // Upload,
     MDinput,
     Sticky,
-    CommentDropdown,
-    PlatformDropdown,
-    SourceUrlDropdown
+    CommentDropdown
   },
   props: {
     isEdit: {
@@ -139,25 +150,10 @@ export default {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
         this.$message({
-          message: rule.field + '为必传项',
+          message: rule.field + ' is necessary',
           type: 'error'
         })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
+        callback(new Error(rule.field + ' is necessary'))
       } else {
         callback()
       }
@@ -165,19 +161,19 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
+      authorListOptions: [],
+      typeListOptions: ['News', 'Finance', 'Daily', 'Company'],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        content: [{ validator: validateRequire }]
       },
       tempRoute: {}
     }
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
+      return this.postForm.summary.length
     },
     lang() {
       return this.$store.getters.language
@@ -197,38 +193,73 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
+    // Edit --> update, Create ---> create
+    submitMethod(isEdit, postForm, flag) {
+      this.$confirm(`Confirm to ${flag} the article?`, 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancle',
+        type: 'warning'
+      })
+        .then(() => {
+          if (isEdit) {
+            updateArticle(postForm)
+              .then(res => {
+                this.$notify({
+                  title: 'Success',
+                  message: res.message,
+                  type: 'success',
+                  duration: 2000
+                })
+              })
+              .catch(err => {
+                console.log('submitMethod err', err)
+              })
+          } else {
+            createArticle(postForm)
+              .then(res => {
+                this.$notify({
+                  title: 'Success',
+                  message: res.message,
+                  type: 'success',
+                  duration: 2000
+                })
+              })
+              .catch(err => {
+                console.log('submitMethod err', err)
+              })
+          }
+        })
+        .catch(() => {})
+    },
     fetchData(id) {
       fetchArticle(id)
         .then(response => {
-          this.postForm = response.data
-          // Just for test
-          this.postForm.title += `   Article Id:${this.postForm.id}`
-          this.postForm.content_short += `   Article Id:${this.postForm.id}`
+          this.postForm = response.data.items
+          console.log('response.data.items', response.data.items) //CHECK: postForm
 
           // Set tagsview title
-          this.setTagsViewTitle()
+          // this.setTagsViewTitle()
         })
         .catch(err => {
-          console.log(err)
+          console.log('fetchData err', err) //DEBUG: fetchData err
         })
     },
-    setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('updateVisitedView', route)
-    },
+    // setTagsViewTitle() {
+    //   const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+    //   const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+    //   this.$store.dispatch('updateVisitedView', route)
+    // },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
-      console.log(this.postForm)
+      this.postForm.display_time = parseTime(this.postForm.display_time)
+      this.postForm.timestamp = Date.now()
+      // console.log('submitForm before api', this.postForm) //CHECK: submitForm
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
+
+          // update / create article
+          this.submitMethod(this.isEdit, this.postForm, 'publish')
+
           this.postForm.status = 'published'
           this.loading = false
         } else {
@@ -238,25 +269,23 @@ export default {
       })
     },
     draftForm() {
+      this.postForm.display_time ? parseTime(this.postForm.display_time) : ''
+      this.postForm.timestamp = Date.now()
       if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
         this.$message({
-          message: '请填写必要的标题和内容',
+          message: 'Please Fill in the Title and Content',
           type: 'warning'
         })
         return
       }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      })
+      // draft article
+      this.submitMethod(this.isEdit, this.postForm, 'draft')
       this.postForm.status = 'draft'
     },
-    getRemoteUserList(query) {
-      userSearch(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
+    getRemoteAuthorList(query) {
+      searchAuthorList(query).then(response => {
+        if (!response.data.authorList) return
+        this.authorListOptions = response.data.authorList.map(v => v.name)
       })
     }
   }

@@ -134,6 +134,12 @@ export const asyncRouterMap = [
     meta: { title: 'Register', icon: 'register', roles: ['admin'] },
     component: Layout,
     name: 'Register',
-    component: () => import('@/views/register/index')
+    children: [
+      {
+        name: 'Form',
+        path: 'form',
+        component: () => import('@/views/register/index')
+      }
+    ]
   }
 ]

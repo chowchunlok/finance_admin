@@ -4,6 +4,7 @@ var Article = require('../models/News')
 var User = require('../models/User')
 var Admin = require('../models/Admin')
 var Article = require('../models/Article')
+var Author = require('../models/Author')
 
 // db config
 var options = { keepAlive: 120, useNewUrlParser: true, bufferCommands: false }
@@ -22,7 +23,8 @@ var model = {
   Article,
   User,
   Admin,
-  Article
+  Article,
+  Author
 }
 
 module.exports = model

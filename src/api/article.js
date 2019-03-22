@@ -1,15 +1,15 @@
 import request from '@/utils/request'
 
 // 发布文章 NOTE: Useless ---> To Delete
-export function publish(data) {
-  return request({
-    url: '/api/article/publish',
-    method: 'post',
-    data: data
-  })
-}
+// export function publish(data) {
+//   return request({
+//     url: '/api/article/publish',
+//     method: 'post',
+//     data: data
+//   })
+// }
 
-// 获取文章列表 NOTE: mock
+// 获取文章列表
 export function fetchList(query) {
   return request({
     url: '/api/article/list',
@@ -18,7 +18,7 @@ export function fetchList(query) {
   })
 }
 
-// 根据id获取文章 NOTE: mock
+// 根据id获取文章
 export function fetchArticle(id) {
   return request({
     url: '/api/article/details',
@@ -27,7 +27,7 @@ export function fetchArticle(id) {
   })
 }
 
-// pv NOTE: mock
+// pv TODO: pv?
 export function fetchPv(pv) {
   return request({
     url: '/api/article/pv',
@@ -36,28 +36,38 @@ export function fetchPv(pv) {
   })
 }
 
-// create NOTE: mock
+// create
 export function createArticle(data) {
   return request({
     url: '/api/article/create',
     method: 'post',
-    data: data
+    data: { data }
   })
 }
 
-// update NOTE: mock
+// update
 export function updateArticle(data) {
   return request({
     url: '/api/article/update',
     method: 'post',
-    data
+    data: { data }
   })
 }
 
-// search Author NOTE: mock
-export function searchAuthorList() {
+// search Author
+export function searchAuthorList(key) {
   return request({
     url: '/api/article/author/list',
-    method: 'get'
+    method: 'get',
+    params: { key }
+  })
+}
+
+// delete from database
+export function deleteArticle(id) {
+  return request({
+    url: '/api/article/delete',
+    method: 'get',
+    params: { id }
   })
 }
