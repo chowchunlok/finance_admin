@@ -1,0 +1,57 @@
+//all
+2000 success
+ *40(41~) Unknown Error //
+
+//REGISTER
+3001 User already exists! Cannot register repeatedly
+3002 register failed
+3040 
+
+//LOGIN
+4001 secret wrong
+4002 user dont exit
+4040  
+
+//CHECK-TOKEN 
+5001 illegal token
+5002 Other clients are logged in
+5003 token expired
+5040 
+
+//info
+6040 
+6001 Admin Don't Exit
+
+//USER
+//getData
+7040
+7001 Not have any user
+//delete
+7041 
+7002 No matched user to delete
+
+
+//ARTICLE
+//create 
+8040 list error
+8041 list not found
+// details
+8042 darabase error
+8043 not found
+//create
+8044 database error
+8045 article already exists
+8050 insert id failed
+//update
+
+
+
+
+
+
+
+
+
+
+
+

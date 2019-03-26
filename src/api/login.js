@@ -1,27 +1,29 @@
 import request from '@/utils/request'
 
 export function login(username, password) {
-	return request({
-		url: '/user/login',
-		method: 'post',
-		data: {
-			username,
-			password
-		}
-	})
+  return request({
+    url: '/api/login',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      username,
+      password
+    }
+  })
 }
 
-export function getInfo(token) {
-	return request({
-		url: '/user/info',
-		method: 'get',
-		params: { token }
-	})
+export function loginInfo() {
+  return request({
+    url: '/api/login/loginInfo',
+    method: 'get'
+  })
 }
 
 export function logout() {
-	return request({
-		url: '/user/logout',
-		method: 'post'
-	})
+  return request({
+    url: '/api/login/logout',
+    method: 'post'
+  })
 }
