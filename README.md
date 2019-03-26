@@ -29,9 +29,14 @@ npm run build
 
 ## Main Function
 
-1. Log In/Log Out, every page needs valid token
+1. Log In/Log Out
+   + Every page needs valid token
+   + Save token in cookie
+   + vuex 
 
 ![log in](./gif/login.gif)
+
+​		
 
 2. Permission Control
 
@@ -39,7 +44,13 @@ npm run build
 
 ![premission control](./gif/permission.gif)
 
+
+
 3. Edit Article
+   + article's different status: [published/draft/delete]
+   + only admin can delete article from database(editor just delete online)
+   + pagenation
+   + comments(add in furture...)
 
 ![edit article](./gif/edit.gif)
 
