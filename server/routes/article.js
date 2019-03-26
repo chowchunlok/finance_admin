@@ -63,7 +63,7 @@ router.post('/create', function(req, res) {
   let title = createData.title
   let status = createData.status
   //set id
-  createData.id = null
+  createData.id = null //NOTE: id
   model.Article.findOne({ title }, (err, doc) => {
     if (err) {
       console.log('err 8044:', err) //DEBUG: 8040 err
@@ -91,7 +91,7 @@ router.post('/create', function(req, res) {
           .then(doc => {
             doc.forEach((item, index) => {
               if (!item.id) {
-                model.Article.updateOne({ id: null }, { id: index + 1 })
+                model.Article.update({ id: null }, { id: index + 1 })
                   .then(raw => {})
                   .catch(err => {
                     console.log('insert id err', err) //DEBUG: 8051 err
