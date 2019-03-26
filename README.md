@@ -2,7 +2,7 @@
 
 ## A background Management of [finance_web](https://github.com/chowchunlok/finance_web/tree/master)
 
-> ### Introduction:
+> ### Introduction
 >
 > A admin built by Vue with Permission control & Token Authentication
 >
@@ -30,13 +30,13 @@ npm run build
 ## Main Function
 
 1. Log In/Log Out
-   + Every page needs valid token
-   + Save token in cookie
-   + vuex 
+   - Every page needs valid token
+   - Save token in cookie
+   - vuex
 
 ![log in](./gif/login.gif)
 
-​		
+​
 
 2. Permission Control
 
@@ -44,13 +44,11 @@ npm run build
 
 ![premission control](./gif/permission.gif)
 
-
-
 3. Edit Article
-   + article's different status: [published/draft/delete]
-   + only admin can delete article from database(editor just delete online)
-   + pagenation
-   + comments(add in furture...)
+   - article's different status: [published/draft/delete]
+   - only admin can delete article from database(editor just delete online)
+   - pagenation
+   - comments(add in furture...)
 
 ![edit article](./gif/edit.gif)
 
