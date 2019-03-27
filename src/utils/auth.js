@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'finance_admin_token'
+const TokenKey = 'financial_admin_token'
 
 export function getToken() {
 	return Cookies.get(TokenKey)

@@ -162,7 +162,7 @@ export default {
       postForm: Object.assign({}, defaultForm),
       loading: false,
       authorListOptions: [],
-      typeListOptions: ['News', 'Finance', 'Daily', 'Company'],
+      typeListOptions: ['News', 'Financial', 'Daily', 'About Us'],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],

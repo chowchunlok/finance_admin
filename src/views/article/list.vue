@@ -258,7 +258,7 @@ const calendarTypeOptions = [
   { key: 'Company', display_name: 'Company' },
   { key: 'Daily', display_name: 'Daily' },
   { key: 'News', display_name: 'News' },
-  { key: 'Finance', display_name: 'Finance' }
+  { key: 'financial', display_name: 'financial' }
 ]
 
 // arr to obj ,such as { CN : "China", US : "USA" }

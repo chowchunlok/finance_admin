@@ -1,10 +1,10 @@
-# finance_admin
+# financial_management
 
-## A background Management of [finance_web](https://github.com/chowchunlok/finance_web/tree/master)
+## A background management of [financial_web](https://github.com/chowchunlok/financial_web/tree/master)
 
 > ### Introduction
 >
-> A admin built by Vue with Permission control & Token Authentication
+> A background management with permission control & token-based authentication
 >
 > ### Skill
 >
@@ -14,7 +14,7 @@
 
 ```bash
 # Clone project
-git clone git@github.com:chowchunlok/finance_admin.git
+git clone git@github.com:chowchunlok/financial_management.git
 
 # Install dependencies
 npm install
@@ -36,7 +36,7 @@ npm run build
 
 ![log in](./gif/login.gif)
 
-​
+
 
 2. Permission Control
 
