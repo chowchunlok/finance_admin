@@ -45,9 +45,7 @@ npm run build
 ![premission control](./gif/permission.gif)
 
 3. Edit Article
-   - article's different status: [published/draft/delete]
    - only admin can delete article from database(editor just delete online)
-   - pagenation
    - comments(add in furture...)
 
 ![edit article](./gif/edit.gif)
