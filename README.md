@@ -1,4 +1,4 @@
-# financial_management
+# CMS_Management
 
 ## A background management of [financial_web](https://github.com/chowchunlok/financial_web/tree/master)
 
@@ -8,7 +8,7 @@
 >
 > ### Skill
 >
-> Vue + Express + Mongoose
+> VueJS + Express + Mongoose
 
 ## Build Setup
 
