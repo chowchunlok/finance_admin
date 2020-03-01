@@ -1,12 +1,12 @@
-# CMS_Management
+# CMS_Admin_Demo
 
-## A background management of [financial_web](https://github.com/chowchunlok/financial_web/tree/master)
+## A CMS System, manage the data of [cms_website_demo](https://github.com/chowchunlok/financial_web/tree/master)
 
 > ### Introduction
 >
-> A background management with permission control & token-based authentication
+> Having permission control & token-based authentication
 >
-> ### Skill
+> ### Skills
 >
 > VueJS + Express + Mongoose
 
