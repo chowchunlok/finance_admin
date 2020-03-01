@@ -1,6 +1,6 @@
 # CMS_Admin_Demo
 
-## A CMS System, manage the data of [cms_website_demo](https://github.com/chowchunlok/financial_web/tree/master)
+## A CMS System, manage the data of [cms_website_demo](https://github.com/ismarcochow/cms_website_demo/tree/master)
 
 > ### Introduction
 >
