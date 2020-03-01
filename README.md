@@ -39,7 +39,7 @@ npm run dev
 
 - Different Roles can read different pages (admin role has register page but editor role)
 
-![premission control](./gif/permission.gif)
+![premission control](https://user-images.githubusercontent.com/26892819/75628615-b93be400-5c15-11ea-99be-c7603d697746.gif)
 
 3. Edit Article
 + only admin can delete article from database(editor just delete online)
